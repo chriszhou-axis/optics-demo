@@ -1,0 +1,340 @@
+:root {
+  color-scheme: light;
+  --bg: #f3efe6;
+  --panel: rgba(250, 247, 240, 0.92);
+  --panel-strong: rgba(255, 252, 246, 0.98);
+  --ink: #17222c;
+  --muted: #5a6670;
+  --line: rgba(23, 34, 44, 0.12);
+  --accent: #d06727;
+  --accent-soft: rgba(208, 103, 39, 0.18);
+  --focus: #0c8a7c;
+  --ray: rgba(32, 111, 154, 0.88);
+  --screen: rgba(120, 71, 17, 0.7);
+  --shadow: 0 20px 45px rgba(32, 41, 49, 0.14);
+  --font-ui: "Segoe UI", "Helvetica Neue", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", "Noto Sans SC", sans-serif;
+  --font-ui-zh: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", "Noto Sans SC", "Segoe UI", sans-serif;
+  font-family: var(--font-ui);
+}
+
+html[lang="zh-CN"] {
+  font-family: var(--font-ui-zh);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at top left, rgba(208, 103, 39, 0.18), transparent 30%),
+    radial-gradient(circle at bottom right, rgba(12, 138, 124, 0.16), transparent 24%),
+    linear-gradient(135deg, #f5f1e6 0%, #ede8dd 48%, #e6ebea 100%);
+}
+
+.app-shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1.65fr) minmax(320px, 0.75fr);
+  min-height: 100vh;
+  gap: 20px;
+  padding: 20px;
+}
+
+.stage-panel,
+.control-panel {
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  background: var(--panel);
+  backdrop-filter: blur(18px);
+  box-shadow: var(--shadow);
+}
+
+.stage-panel {
+  display: flex;
+  flex-direction: column;
+  border-radius: 28px;
+  overflow: hidden;
+}
+
+.stage-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  align-items: flex-start;
+  padding: 22px 24px 14px;
+}
+
+.header-tools {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 14px;
+}
+
+.language-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 14px;
+  background: rgba(255, 252, 246, 0.88);
+  border: 1px solid rgba(23, 34, 44, 0.08);
+}
+
+.language-label {
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.language-select {
+  min-width: 108px;
+  border: 1px solid rgba(23, 34, 44, 0.12);
+  border-radius: 10px;
+  padding: 7px 28px 7px 10px;
+  background: #fffaf3;
+  color: var(--ink);
+  font-size: 0.86rem;
+  font-weight: 700;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--muted) 50%),
+    linear-gradient(135deg, var(--muted) 50%, transparent 50%);
+  background-position:
+    calc(100% - 16px) calc(50% - 2px),
+    calc(100% - 11px) calc(50% - 2px);
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+}
+
+.language-select:focus {
+  outline: 2px solid rgba(208, 103, 39, 0.24);
+  outline-offset: 2px;
+}
+
+.eyebrow {
+  margin: 0 0 6px;
+  color: var(--accent);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+h1,
+h2,
+p {
+  margin: 0;
+}
+
+h1 {
+  font-size: clamp(1.8rem, 3vw, 3rem);
+  line-height: 1.05;
+}
+
+h2 {
+  font-size: 1rem;
+  margin-bottom: 14px;
+}
+
+.helper-text {
+  max-width: 32rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+html[lang="zh-CN"] .helper-text {
+  max-width: 30rem;
+  line-height: 1.42;
+}
+
+.canvas-frame {
+  position: relative;
+  flex: 1;
+  min-height: 500px;
+  padding: 0 18px 18px;
+}
+
+#focusCanvas {
+  width: 100%;
+  height: 100%;
+  min-height: 500px;
+  display: block;
+  border-radius: 22px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(240, 244, 244, 0.86)),
+    repeating-linear-gradient(90deg, transparent, transparent 80px, rgba(23, 34, 44, 0.02) 80px, rgba(23, 34, 44, 0.02) 81px);
+  cursor: crosshair;
+}
+
+.canvas-legend {
+  position: absolute;
+  left: 34px;
+  bottom: 96px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 10px 12px;
+  border-radius: 999px;
+  background: rgba(255, 252, 246, 0.82);
+  border: 1px solid rgba(23, 34, 44, 0.08);
+  font-size: 0.88rem;
+}
+
+.legend-swatch {
+  display: inline-block;
+  width: 16px;
+  height: 3px;
+  border-radius: 99px;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+.legend-swatch.object {
+  background: var(--accent);
+}
+
+.legend-swatch.ray {
+  background: var(--ray);
+}
+
+.legend-swatch.dome {
+  background: rgba(89, 164, 178, 0.72);
+}
+
+.legend-swatch.focus {
+  background: var(--focus);
+}
+
+.legend-swatch.screen {
+  background: var(--screen);
+}
+
+.control-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 22px;
+  border-radius: 28px;
+}
+
+.panel-section {
+  padding: 18px;
+  border-radius: 20px;
+  background: var(--panel-strong);
+  border: 1px solid rgba(23, 34, 44, 0.07);
+}
+
+.control-row,
+.toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  font-size: 0.95rem;
+  margin-bottom: 8px;
+}
+
+input[type="range"] {
+  width: 100%;
+  margin: 0 0 14px;
+  accent-color: var(--accent);
+}
+
+input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--focus);
+}
+
+button {
+  width: 100%;
+  border: 0;
+  border-radius: 14px;
+  padding: 14px 18px;
+  color: #fff7f0;
+  background: linear-gradient(135deg, #bf5a21, #d97b2f);
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 12px 24px rgba(191, 90, 33, 0.22);
+}
+
+button:hover {
+  filter: brightness(1.03);
+}
+
+.metrics dl {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+}
+
+.metrics div {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--line);
+}
+
+.metrics div:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+dt {
+  color: var(--muted);
+}
+
+dd,
+output {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
+@media (max-width: 1080px) {
+  .app-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .stage-header {
+    flex-direction: column;
+  }
+
+  .header-tools {
+    align-items: flex-start;
+  }
+
+  .canvas-frame,
+  #focusCanvas {
+    min-height: 420px;
+  }
+}
+
+@media (max-width: 720px) {
+  .app-shell {
+    padding: 12px;
+    gap: 12px;
+  }
+
+  .stage-header,
+  .control-panel {
+    padding: 18px;
+  }
+
+  .canvas-frame {
+    padding: 0 10px 10px;
+  }
+
+  .canvas-legend {
+    position: static;
+    margin: 12px;
+    border-radius: 18px;
+  }
+}

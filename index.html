@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>M12 Dome Camera Focus</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <section class="stage-panel">
+        <div class="stage-header">
+          <div>
+            <p class="eyebrow" data-i18n="eyebrow">Interactive Optics Study</p>
+            <h1 data-i18n="title">M12 Dome Camera Focus</h1>
+          </div>
+          <div class="header-tools">
+            <label class="language-switch" for="languageSelect">
+              <span class="language-label" data-i18n="languageLabel">Language</span>
+              <select id="languageSelect" class="language-select" aria-label="Language switch">
+                <option value="en">English</option>
+                <option value="zh">中文</option>
+              </select>
+            </label>
+            <p class="helper-text" data-i18n="helperText">
+            Drag the subject in the scene and drag the lens toward or away from the fixed sensor to see how a 2.8 mm F2.0 M12 camera
+            lens changes subject clarity, focus distance, sensor blur, and thermal focus drift under a dome front element.
+            </p>
+          </div>
+        </div>
+        <div class="canvas-frame">
+          <canvas id="focusCanvas"></canvas>
+          <div class="canvas-legend">
+            <span><i class="legend-swatch object"></i><span data-i18n="legendSubject">Subject</span></span>
+            <span><i class="legend-swatch ray"></i><span data-i18n="legendRays">Refracted rays</span></span>
+            <span><i class="legend-swatch dome"></i><span data-i18n="legendDomeCover">Dome cover</span></span>
+            <span><i class="legend-swatch focus"></i><span data-i18n="legendImagePlane">Image plane</span></span>
+            <span><i class="legend-swatch screen"></i><span data-i18n="legendSensorPlane">Sensor plane</span></span>
+          </div>
+        </div>
+      </section>
+
+      <aside class="control-panel">
+        <div class="panel-section">
+          <h2 data-i18n="cameraLensTitle">Camera Lens</h2>
+          <dl>
+            <div>
+              <dt data-i18n="nominalLensLabel">Nominal lens</dt>
+              <dd>2.8 mm, F2.0</dd>
+            </div>
+            <div>
+              <dt data-i18n="fovLabel">Field of view</dt>
+              <dd>99° H / 74° V</dd>
+            </div>
+            <div>
+              <dt data-i18n="minFocusLabel">Minimum focus</dt>
+              <dd>1 m</dd>
+            </div>
+            <div>
+              <dt data-i18n="mountLabel">Mount</dt>
+              <dd>M12, fixed iris</dd>
+            </div>
+          </dl>
+        </div>
+
+        <div class="panel-section">
+          <h2 data-i18n="lensTuningTitle">Lens Tuning</h2>
+          <label class="control-row" for="domeStrength">
+            <span data-i18n="lensPowerBiasLabel">Lens power bias</span>
+            <output id="domeStrengthValue">1.20</output>
+          </label>
+          <input id="domeStrength" type="range" min="0.4" max="2.4" step="0.01" value="1.2" />
+
+          <label class="control-row" for="refractiveBias">
+            <span data-i18n="lensAberrationBiasLabel">Lens aberration bias</span>
+            <output id="refractiveBiasValue">1.10</output>
+          </label>
+          <input id="refractiveBias" type="range" min="0.7" max="1.7" step="0.01" value="1.1" />
+
+          <label class="control-row" for="temperature">
+            <span data-i18n="lensTemperatureLabel">Lens temperature</span>
+            <output id="temperatureValue">20 C</output>
+          </label>
+          <input id="temperature" type="range" min="-20" max="80" step="1" value="20" />
+        </div>
+
+        <div class="panel-section">
+          <h2 data-i18n="realDomeInfluenceTitle">Real Dome Influence</h2>
+
+          <label class="control-row" for="domeTilt">
+            <span data-i18n="domeTiltLabel">Dome tilt</span>
+            <output id="domeTiltValue">0.40 deg</output>
+          </label>
+          <input id="domeTilt" type="range" min="0" max="2.0" step="0.01" value="0.4" />
+
+          <label class="control-row" for="domeGap">
+            <span data-i18n="domeGapLabel">Dome-to-lens gap</span>
+            <output id="domeGapValue">4.0 mm</output>
+          </label>
+          <input id="domeGap" type="range" min="1.5" max="12" step="0.1" value="4.0" />
+
+          <label class="control-row" for="screenOffset">
+            <span data-i18n="sceneDepthSpanLabel">Scene depth span</span>
+            <output id="screenOffsetValue">12.0 m</output>
+          </label>
+          <input id="screenOffset" type="range" min="6" max="20" step="0.5" value="12" />
+
+          <label class="control-row" for="rayCount">
+            <span data-i18n="rayCountLabel">Ray count</span>
+            <output id="rayCountValue">5</output>
+          </label>
+          <input id="rayCount" type="range" min="3" max="9" step="2" value="5" />
+        </div>
+
+        <div class="panel-section">
+          <h2 data-i18n="interactionTitle">Interaction</h2>
+          <label class="toggle-row" for="followLens">
+            <span data-i18n="lensFollowCursorLabel">Lens follow cursor</span>
+            <input id="followLens" type="checkbox" />
+          </label>
+
+          <label class="control-row" for="followAmount">
+            <span data-i18n="followAmountLabel">Follow amount</span>
+            <output id="followAmountValue">0.24</output>
+          </label>
+          <input id="followAmount" type="range" min="0.05" max="0.5" step="0.01" value="0.24" />
+
+          <button id="resetScene" type="button" data-i18n="resetSceneLabel">Reset Scene</button>
+        </div>
+
+        <div class="panel-section metrics">
+          <h2 data-i18n="liveReadoutTitle">Live Readout</h2>
+          <dl>
+            <div>
+              <dt data-i18n="subjectDistanceLabel">Subject distance</dt>
+              <dd id="objectDistanceValue">0 m</dd>
+            </div>
+            <div>
+              <dt data-i18n="focusSetDistanceLabel">Focus set distance</dt>
+              <dd id="focusDistanceValue">0 m</dd>
+            </div>
+            <div>
+              <dt data-i18n="effectiveFocalLengthLabel">Effective focal length</dt>
+              <dd id="focalLengthValue">0 mm</dd>
+            </div>
+            <div>
+              <dt data-i18n="thermalFocusShiftLabel">Thermal focus shift</dt>
+              <dd id="temperatureShiftValue">0 um</dd>
+            </div>
+            <div>
+              <dt data-i18n="opticalAxisShiftLabel">Optical axis shift</dt>
+              <dd id="axisShiftValue">0 px</dd>
+            </div>
+            <div>
+              <dt data-i18n="domeEdgePenaltyLabel">Dome edge penalty</dt>
+              <dd id="domePenaltyValue">0 um</dd>
+            </div>
+            <div>
+              <dt data-i18n="sensorBlurCircleLabel">Sensor blur circle</dt>
+              <dd id="blurRadiusValue">0 um</dd>
+            </div>
+            <div>
+              <dt data-i18n="sharpnessLabel">Sharpness</dt>
+              <dd id="sharpnessValue">Soft</dd>
+            </div>
+            <div>
+              <dt data-i18n="modeLabel">Mode</dt>
+              <dd id="modeValue">Idle</dd>
+            </div>
+          </dl>
+        </div>
+      </aside>
+    </div>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
