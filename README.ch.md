@@ -1,6 +1,6 @@
 # M12 Dome Camera Focus Demo
 
-[English Documentation](./README.en.md)
+[English Documentation](./README.md)
 
 这是一个纯前端、无依赖的交互式光学演示，用来观察 M12 广角镜头在球罩前盖存在时，对成像清晰度、焦点位置、传感器模糊和温漂的影响。
 
